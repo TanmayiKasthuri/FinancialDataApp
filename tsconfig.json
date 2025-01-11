@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "target": "ES6",
+    "module": "ESNext",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"], // Keep this as is for general imports
+      "components/*": ["src/components/*"], // Alias for components
+      "utils/*": ["src/lib/utils/*"], // Alias for utils
+      "ui/*": ["src/components/ui/*"], // Alias for UI components
+      "lib/*": ["src/lib/*"], // Alias for lib
+      "hooks/*": ["src/hooks/*"]
+    },
+    "plugins": []
+  },
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+}
