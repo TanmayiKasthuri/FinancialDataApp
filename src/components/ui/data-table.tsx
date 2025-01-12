@@ -43,7 +43,7 @@ export function DataTable<TData, TValue>({
     []
   )
 
-  console.log("Date Column ID:", date);
+  //console.log("Date Column ID:", date);
  
   
 
