@@ -4,13 +4,8 @@ import IncomeStatementTable from './components/IcomeStatement/incomestatement';
 
 function App() {
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </header> */}
-        <h1>
+    <div className="App" >
+        <h1 className='font-mono text-[18px] sm:text-[32px]'>
           Financial data sharing app
         </h1>
         <IncomeStatementTable/>

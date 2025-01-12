@@ -1,66 +1,85 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from "react";
 
-interface RangeSliderProps {
+interface MultiRangeSliderProps {
   min: number;
   max: number;
-  step: number;
-  initialFrom: number;
-  initialTo: number;
-  onChange: (from: number, to: number) => void;
+  onRangeChange: (newMin: number, newMax: number) => void;
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({
-  min,
-  max,
-  step,
-  initialFrom,
-  initialTo,
-  onChange,
-}) => {
-  const [fromValue, setFromValue] = useState(initialFrom);
-  const [toValue, setToValue] = useState(initialTo);
+const MultiRangeSlider: React.FC<MultiRangeSliderProps> = ({ min, max, onRangeChange }) => {
+  const [minVal, setMinVal] = useState<number>(min);
+  const [maxVal, setMaxVal] = useState<number>(max);
+  const minValRef = useRef<number>(min);
+  const maxValRef = useRef<number>(max);
+  const range = useRef<HTMLDivElement>(null);
 
-  const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newFromValue = Math.min(Number(e.target.value), toValue - step);
-    setFromValue(newFromValue);
-    onChange(newFromValue, toValue);
-  };
+  // Convert to percentage
+  const getPercent = useCallback(
+    (value: number): number => Math.round(((value - min) / (max - min)) * 100),
+    [min, max]
+  );
 
-  const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newToValue = Math.max(Number(e.target.value), fromValue + step);
-    setToValue(newToValue);
-    onChange(fromValue, newToValue);
-  };
+  // Update the range width and position based on minVal
+  useEffect(() => {
+    const minPercent = getPercent(minVal);
+    const maxPercent = getPercent(maxValRef.current);
+
+    if (range.current) {
+      range.current.style.left = `${minPercent}%`;
+      range.current.style.width = `${maxPercent - minPercent}%`;
+    }
+    onRangeChange(minVal, maxValRef.current);
+  }, [minVal, getPercent]);
+
+  // Update the range width and position based on maxVal
+  useEffect(() => {
+    const minPercent = getPercent(minValRef.current);
+    const maxPercent = getPercent(maxVal);
+
+    if (range.current) {
+      range.current.style.width = `${maxPercent - minPercent}%`;
+    }
+    onRangeChange(minValRef.current, maxVal);
+  }, [maxVal, getPercent]);
 
   return (
-    <div className="flex items-center space-x-4">
-      <div className="flex flex-col items-center">
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={fromValue}
-          onChange={handleFromChange}
-          className="w-40 h-2 bg-blue-500 rounded-lg"
-        />
-        <span className="text-sm text-blue-500">{fromValue}</span>
-      </div>
+    <div className="container mx-auto px-4">
+  <div className="flex flex-wrap justify-center gap-4 ">
+    <input
+      type="range"
+      min={min}
+      max={max}
+      value={minVal}
+      onChange={(event) => {
+        const value = Math.min(Number(event.target.value), maxVal - 1);
+        setMinVal(value);
+        minValRef.current = value;
+      }}
+      className="thumb thumb--left w-32 sm:w-40"
+      style={{ zIndex: minVal > max - 100 ? "5" : undefined }}
+    />
+    <input
+      type="range"
+      min={min}
+      max={max}
+      value={maxVal}
+      onChange={(event) => {
+        const value = Math.max(Number(event.target.value), minVal + 1);
+        setMaxVal(value);
+        maxValRef.current = value;
+      }}
+      className="thumb thumb--right w-32 sm:w-40"
+    />
+  </div>
 
-      <div className="flex flex-col items-center">
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={toValue}
-          onChange={handleToChange}
-          className="w-40 h-2 bg-blue-500 rounded-lg"
-        />
-        <span className="text-sm text-blue-500">{toValue}</span>
-      </div>
-    </div>
+  <div className="slider mt-4">
+    <div className="slider__track" />
+    <div ref={range} className="slider__range" />
+    <div className="slider__left-value">{minVal}-{maxVal}</div>
+  </div>
+</div>
+
   );
 };
 
-export default RangeSlider;
+export default MultiRangeSlider;

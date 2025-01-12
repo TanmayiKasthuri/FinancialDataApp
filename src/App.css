@@ -7,6 +7,12 @@
   pointer-events: none;
 }
 
+h1 {
+  font-style: normal;
+  line-height: normal;
+   
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -41,4 +47,9 @@
 div.rdp.p-3.rdp-multiple_months
 {
   width: 500px;
+}
+
+.bg-blue {
+  --tw-bg-opacity: 1;
+  background-color: #4169E1; /* Blue color */
 }

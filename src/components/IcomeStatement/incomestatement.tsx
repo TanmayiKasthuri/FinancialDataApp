@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { IncomeStatement, columns } from "../Table-Columns/IncomeStatementColumn";
 import { DataTable } from "../ui/data-table";
-import RangeSlider from '../ui/rangeslider';
+//import RangeSlider from '../ui/rangeslider';
+import MultiRangeSlider from '../ui/rangeslider';
 
 const IncomeStatementTable: React.FC = () => {
   const [data, setData] = useState<IncomeStatement[]>([]);
+  const [minVal, setMinVal] = useState<number>(2);
+  const [maxVal, setMaxVal] = useState<number>(400000000000);
+  const [minNetProfit, setMinNetProfit] = useState<number>(2);
+  const [maxNetProfit, setMaxNetProfit] = useState<number>(100000000000);
   const [filteredData, setFilteredData] = useState<IncomeStatement[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
 
   const [revenueRange, setRevenueRange] = useState<{ from: number; to: number }>({
     from: 0,
@@ -18,33 +24,37 @@ const IncomeStatementTable: React.FC = () => {
     to: 0,
   });
 
-  const handleRevenueRangeChange = (from: number, to: number) => {
-    setRevenueRange({ from, to });
-  };
-
-  const handleNetIncomeRangeChange = (from: number, to: number) => {
-    setNetIncomeRange({ from, to });
-  };
-
-  const filterData = (
-    data: IncomeStatement[],
-    revenueRange: { from: number; to: number },
-    netIncomeRange: { from: number; to: number }
-  ): IncomeStatement[] => {
-    return data.filter(
-      item =>
-        item.revenue >= revenueRange.from &&
-        item.revenue <= revenueRange.to &&
-        item.netIncome >= netIncomeRange.from &&
-        item.netIncome <= netIncomeRange.to
+  const applyFilters = (
+    revenue: { from: number; to: number },
+    netIncome: { from: number; to: number }
+  ) => {
+    const filtered = data.filter(
+      (item) =>
+        item.revenue >= revenue.from &&
+        item.revenue <= revenue.to &&
+        item.netIncome >= netIncome.from &&
+        item.netIncome <= netIncome.to
     );
+    setFilteredData(filtered);
+  };
+
+  const handleRangeChange = (newMin: number, newMax: number) => {
+    const newRevenueRange = { from: newMin, to: newMax };
+    setRevenueRange(newRevenueRange);
+    applyFilters(newRevenueRange, netIncomeRange);
+  };
+
+  const handleNetProfitRangeChange = (newMin: number, newMax: number) => {
+    const newNetIncomeRange = { from: newMin, to: newMax };
+    setNetIncomeRange(newNetIncomeRange);
+    applyFilters(revenueRange, newNetIncomeRange);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=ISp80oiFbEy7aVHSj2WKK1uHRKV9jEyG'
+          'https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=P1515K3INbsUH28P2vSjPJpluAM9gkVH'
         );
         const result = await response.json();
 
@@ -76,40 +86,17 @@ const IncomeStatementTable: React.FC = () => {
 
   useEffect(() => {
     // Update filtered data when ranges or original data change
-    setFilteredData(filterData(data, revenueRange, netIncomeRange));
+    applyFilters(revenueRange, netIncomeRange);
   }, [data, revenueRange, netIncomeRange]);
 
   if (loading) return <p>Loading...</p>;
-
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-xl font-bold mb-4">Income Statement Table</h1>
-
-      <RangeSlider
-        min={revenueRange.from}
-        max={revenueRange.to}
-        step={1000000000}
-        initialFrom={revenueRange.from}
-        initialTo={revenueRange.to}
-        onChange={handleRevenueRangeChange}
-      />
-      <p>
-        Revenue Range: ${revenueRange.from.toLocaleString()} - ${revenueRange.to.toLocaleString()}
-      </p>
-
-      <RangeSlider
-        min={netIncomeRange.from}
-        max={netIncomeRange.to}
-        step={100000000}
-        initialFrom={netIncomeRange.from}
-        initialTo={netIncomeRange.to}
-        onChange={handleNetIncomeRangeChange}
-      />
-      <p>
-        Net Income Range: ${netIncomeRange.from.toLocaleString()} - ${netIncomeRange.to.toLocaleString()}
-      </p>
-
-      <DataTable columns={columns} data={filteredData} date="date" dataRaw={data} />
+    <h2>Revenue Slider</h2>
+    <MultiRangeSlider min={minVal} max={maxVal} onRangeChange={handleRangeChange} />
+    <h2>Net Income Slider</h2>
+    <MultiRangeSlider min={minNetProfit} max={maxNetProfit} onRangeChange={handleNetProfitRangeChange} />
+    <DataTable columns={columns} data={filteredData} date="date" />
     </div>
   );
 };

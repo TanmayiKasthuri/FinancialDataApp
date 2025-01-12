@@ -16,11 +16,11 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
       classNames={{
   months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
   month: 'space-y-4',
-  caption: 'flex justify-center py-2 rounded-md relative items-center bg-[#FCA31133]',
+  caption: 'flex justify-center py-2 rounded-md relative items-center bg-[#A7C7E7]',
   caption_label: 'text-sm font-semibold',
   nav: 'space-x-1 flex items-center',
   nav_button: cn(
-    'flex items-center justify-center transition-all shadow rounded-sm size-7 bg-white hover:bg-orange'
+    'flex items-center justify-center transition-all shadow rounded-sm size-7 bg-white hover:bg-blue'
   ),
   nav_button_previous: 'absolute left-1',
   nav_button_next: 'absolute right-1',
@@ -42,12 +42,12 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
   day_range_start: 'day-range-start',
   day_range_end: 'day-range-end',
   day_selected:
-    'bg-orange hover:bg-orange focus:bg-orange text-primary-foreground hover:text-primary-foreground focus:text-primary-foreground',
+    'bg-blue hover:bg-blue focus:bg-blue text-primary-foreground hover:text-primary-foreground focus:text-primary-foreground',
   day_today: 'bg-accent text-accent-foreground',
   day_outside:
     'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
   day_disabled: 'text-muted-foreground opacity-50',
-  day_range_middle: 'aria-selected:bg-[#FCA31133] aria-selected:text-accent-foreground',
+  day_range_middle: 'aria-selected:bg-[#A7C7E7] aria-selected:text-accent-foreground',
   day_hidden: 'invisible',
   ...classNames,
 }}
