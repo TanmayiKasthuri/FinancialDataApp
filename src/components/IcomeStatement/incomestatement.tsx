@@ -58,7 +58,7 @@ const IncomeStatementTable: React.FC = () => {
         
 
         const response = await fetch(
-          `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=${apiKey}`
+          `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=Rr1BwedNOgRi002YOOtwQ7UEmqDECFTY`
         );
         const result = await response.json();
 
