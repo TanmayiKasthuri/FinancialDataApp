@@ -31,7 +31,7 @@ export function DatePickerWithRange<TData>({
 }: DatePickerWithRangeProps<TData>) {
   const dateColumn = table.getColumn(date);
 
-  console.log(date)
+  //console.log(date)
 
   if (!dateColumn) return null;
 
