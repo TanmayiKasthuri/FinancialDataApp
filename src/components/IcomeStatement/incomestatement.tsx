@@ -50,11 +50,15 @@ const IncomeStatementTable: React.FC = () => {
     applyFilters(revenueRange, newNetIncomeRange);
   };
 
+  const apiKey = process.env.REACT_APP_API_KEY;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
+
         const response = await fetch(
-          'https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=P1515K3INbsUH28P2vSjPJpluAM9gkVH'
+          `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=${apiKey}`
         );
         const result = await response.json();
 
