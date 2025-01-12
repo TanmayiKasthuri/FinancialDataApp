@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use Ubuntu as the runner
+
+    steps:
+    # Step 1: Checkout the repository code
+    - name: Checkout code
+      uses: actions/checkout@v2  # Action to check out your repository code
+
+    # Step 2: Set up Node.js for your React app
+    - name: Set up Node.js
+      uses: actions/setup-node@v3  # Use the latest version of setup-node
+      with:
+        node-version: '16'  # Specify the Node.js version
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install  # Install all Node.js dependencies
+
+    # Step 4: Set up API Key for build (needed in environment variables for React)
+    - name: Set up API Key
+      run: echo "REACT_APP_API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV  # Inject secret API key as environment variable
+
+    # Step 5: Build the React application
+    - name: Build the project
+      run: npm run build  # Build the production version of your app
+
+    # Step 6: Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4  # Action to deploy to GitHub Pages
+      with:
+        branch: gh-pages  # Specify the target branch for deployment
+        folder: build  # Specify the folder containing the build
+        token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub Token to authenticate deployment
+
+    # Step 7: Run tests (optional)
+    - name: Run tests (optional)
+      run: npm test  # Run any tests (if necessary)
