@@ -15,6 +15,15 @@ interface DatePickerWithRangeProps<TData> extends React.HTMLAttributes<HTMLDivEl
   date: string;
 }
 
+// export function filterDataByRevenue<TData>(
+//     data: TData[],
+//     minRev: number,
+//     maxRev: number
+//   ): TData[]
+//   {
+//     return data.filter(item => item.revenue >= minRev && item.revenue <= maxRev);
+//   };
+
 export function DatePickerWithRange<TData>({
   className,
   table,

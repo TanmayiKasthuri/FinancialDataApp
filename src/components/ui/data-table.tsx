@@ -21,21 +21,35 @@ import {
 } from "./table"
 
 import { DatePickerWithRange } from './date-picker';
+
 import { Input } from "./input";
 import { cn } from "../../lib/utils";
+import { IncomeStatement } from "../Table-Columns/IncomeStatementColumn";
 
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   date?: string
+  dataRaw: IncomeStatement[]
 //   searchColumnId?: keyof TData extends string ? keyof TData : never;
 }
+
+// export const filterDataByRevenue = <TData extends { revenue: number }>(
+//     data: TData[],
+//     minRev: number,
+//     maxRev: number
+//   ): TData[] => {
+//     return data.filter(item => item.revenue >= minRev && item.revenue <= maxRev);
+//   };
+  
+  
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   date,
+  dataRaw
 //   searchColumnId,
   
 }: DataTableProps<TData, TValue>) {
@@ -46,7 +60,8 @@ export function DataTable<TData, TValue>({
   )
 
   console.log("Date Column ID:", date);
-
+ 
+  
 
   const table = useReactTable({
     data,
@@ -61,6 +76,9 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   })
+
+  console.log(typeof(dataRaw))
+  console.log(dataRaw)
 
   return (
     

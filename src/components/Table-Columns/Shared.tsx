@@ -16,3 +16,11 @@ export function dateRangeFilterFn<TData>(
   
     return isWithinInterval(date, { start: from!, end: to! });
   }
+
+  export const rangeFilter = (rows: any[], columnId: string, range: [number, number]) => {
+    const [min, max] = range;
+    return rows.filter((row) => {
+      const value = row.values[columnId];
+      return value >= min && value <= max;
+    });
+  };

@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "../ui/button"
 import {ArrowUpDown} from "lucide-react";
-import { dateRangeFilterFn } from "./Shared";
+import { dateRangeFilterFn, rangeFilter } from "./Shared";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type IncomeStatement = {
@@ -28,6 +28,8 @@ export const columns: ColumnDef<IncomeStatement>[] = [
         )
       },
     filterFn: dateRangeFilterFn,
+    //filterFn: rangeFilter,
+
   },
   {
     accessorKey: "revenue",
@@ -42,6 +44,7 @@ export const columns: ColumnDef<IncomeStatement>[] = [
           </Button>
         )
       },
+      //filterFn: rangeFilter,
   },
   {
     accessorKey: "netIncome",

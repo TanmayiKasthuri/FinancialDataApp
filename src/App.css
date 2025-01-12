@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+
+div.rdp.p-3.rdp-multiple_months
+{
+  width: 500px;
+}
