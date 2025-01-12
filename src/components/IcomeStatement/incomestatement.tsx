@@ -96,9 +96,13 @@ const IncomeStatementTable: React.FC = () => {
   if (loading) return <p>Loading...</p>;
   return (
     <div className="container mx-auto py-10">
-    <h2>Revenue Slider</h2>
+    <h2 className="bg-yellow-300 text-black p-2 rounded-full w-max inline-block text-lg sm:text-base sm:py-1 sm:px-2 sm:mt-1 sm:mb-1">
+    Revenue Slider
+    </h2>
     <MultiRangeSlider min={minVal} max={maxVal} onRangeChange={handleRangeChange} />
-    <h2>Net Income Slider</h2>
+    <h2 className="bg-sky-400 text-black p-2 rounded-full w-max inline-block text-lg sm:text-base sm:py-1 sm:px-2 sm:mt-1 sm:mb-1">
+      Net Income Slider
+    </h2>
     <MultiRangeSlider min={minNetProfit} max={maxNetProfit} onRangeChange={handleNetProfitRangeChange} />
     <DataTable columns={columns} data={filteredData} date="date" />
     </div>
